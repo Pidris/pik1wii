@@ -7,7 +7,6 @@
 #include <egg/core/eggHeap.h>
 #include <egg/core/eggMutex.h>
 #include <egg/math/eggMatrix.h>
-#include <egg/prim/eggList.h>
 #include <nw4r/lyt.h>
 #include <nw4r/ut.h>
 
