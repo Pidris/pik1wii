@@ -22,6 +22,7 @@
 #include "PlayerState.h"
 #include "Section.h"
 #include "SoundMgr.h"
+#include "System12/Config.h"
 #include "gameflow.h"
 #include "jaudio/piki_scene.h"
 #include "jaudio/pikidemo.h"
@@ -868,7 +869,7 @@ ModeState* RunningModeState::update(u32& result)
 	// trigger day end when time expires
 	if (!gameflow.mIsDayEndActive && !gameflow.mMoviePlayer->mIsActive
 	    && gameflow.mWorldClock.mTimeOfDay >= gameflow.mParameters->mEndHour()) {
-		gameflow.mIsPauseAllowed = FALSE;
+		gameflow.mIsPauseAllowed    = FALSE;
 		gameflow.mIsDayEndTriggered = TRUE;
 	}
 
@@ -914,8 +915,7 @@ ModeState* RunningModeState::update(u32& result)
 		// debug menus also use the Y button, and both being open at the same time can even cause crashes in the Movie Player.
 		else if (!gameflow.mIsChallengeMode && mController->keyClick(KBBTN_Y)
 		         && gameflow.mWorldClock.mTimeOfDay < gameflow.mParameters->mEndHour() - MAP_MENU_SUNSET_LOCKOUT
-		         && !gameflow.mIsUIOverlayActive && !mesgsPending && TERNARY_BUGFIX(!mParentSection->mActiveMenu, true))
-		{
+		         && !gameflow.mIsUIOverlayActive && !mesgsPending && TERNARY_BUGFIX(!mParentSection->mActiveMenu, true)) {
 			// also can't open the map/controls menu in the very last ~8s of gameplay before sunset
 			gameflow.mGameInterface->message(MOVIECMD_CreateMenuWindow, 0);
 			mIsOverlayCached            = gameflow.mIsUIOverlayActive;
@@ -934,7 +934,7 @@ ModeState* RunningModeState::update(u32& result)
 		if (flowCont.mGameEndFlag == GAMEEND_NaviDown) {
 			// you killed your captain!
 			// can't skip the end of day cutscene if you kill your captain - shame! shame! shame!
-			flowCont.mIsDayEndSkippable = FALSE;
+			flowCont.mIsDayEndSkippable                = FALSE;
 			mParentSection->mPendingOnePlayerSectionID = ONEPLAYER_NewPikiGame;
 			// start OLIMAR DOWN ! state
 			return new MessageModeState(mParentSection, false);
@@ -943,7 +943,7 @@ ModeState* RunningModeState::update(u32& result)
 		if (flowCont.mGameEndFlag == GAMEEND_PikminExtinction) {
 			// you killed all your pikmin!
 			// can't skip the end of day cutscene if you kill all your pikmin - shame! shame! shame!
-			flowCont.mIsDayEndSkippable = FALSE;
+			flowCont.mIsDayEndSkippable                = FALSE;
 			mParentSection->mPendingOnePlayerSectionID = ONEPLAYER_NewPikiGame;
 			// start PIKMIN EXTINCTION state
 			return new MessageModeState(mParentSection, true);
@@ -979,7 +979,7 @@ ModeState* RunningModeState::update(u32& result)
 	} else if (state == zen::ogScrPauseMgr::PAUSE_ExitToSunset) {
 		// go to sunset selected - end the day
 		gamecore->forceDayEnd();
-		gameflow.mIsPauseAllowed = FALSE;
+		gameflow.mIsPauseAllowed    = FALSE;
 		gameflow.mIsDayEndTriggered = TRUE;
 		gameflow.mIsUIOverlayActive = mIsOverlayCached;
 
@@ -1213,8 +1213,7 @@ ModeState* DayOverModeState::update(u32& result)
 		}
 	}
 
-	if (!gameflow.mMoviePlayer->mIsActive || skipped)
-	{
+	if (!gameflow.mMoviePlayer->mIsActive || skipped) {
 		// once the current cutscene is finished, handle transition to the next phase
 		ModeState* nextState = nullptr;
 		switch (mState) {
@@ -1996,7 +1995,7 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 
 		// do the main frame render
 
-// need these to be commented out, otherwise gsys does weird things in the next if block.
+		// need these to be commented out, otherwise gsys does weird things in the next if block.
 		MATCHING_START_TIMER("mainRender", true);
 		mainRender(gfx);
 		MATCHING_STOP_TIMER("mainRender");
@@ -2059,7 +2058,7 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 				gfx.setOrthogonal(orthoMtx.mMtx, area5);
 				totalWindow->draw(gfx);
 			}
-			
+
 			if (memcardWindow) {
 				const RectArea area6(AREA_FULL_SCREEN(gfx));
 				gfx.setOrthogonal(orthoMtx.mMtx, area6);
@@ -2117,7 +2116,7 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 		challengeWindow = nullptr;
 
 		memcardWindow = nullptr;
-		
+
 		tutorialWindow = nullptr;
 		menuWindow     = nullptr;
 		memStat->start("gameover");
@@ -2164,8 +2163,12 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 			}
 			data->close();
 		}
-
+		int heap = gsys->mActiveHeapIdx;
+		if (!EGG_INSTANCE(System12::Config)->mUseMem1.mData == 0) {
+			heap = gsys->setHeap(SYSHEAP_App1);
+		}
 		map->initShape();
+		gsys->setHeap(heap);
 	}
 
 	/**
@@ -2190,8 +2193,7 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 		gfx.setPerspective(gfx.mCamera->mPerspectiveMatrix.mMtx, gfx.mCamera->mFov, gfx.mCamera->mAspectRatio, gfx.mCamera->mNear,
 		                   gfx.mCamera->mFar, 1.0f);
 
-		if (!memcardWindow && !(gameflow.mDemoFlags & CinePlayerFlags::NonGameMovie))
-		{
+		if (!memcardWindow && !(gameflow.mDemoFlags & CinePlayerFlags::NonGameMovie)) {
 			bool isTimeMoving = true;
 			if (playerState->isTutorial() && !gameflow.mIsDayEndActive) {
 				isTimeMoving = false;
@@ -2417,20 +2419,20 @@ struct NewPikiGameSetupSection : public BaseGameSection {
 
 	///< 00     = VTBL
 	///< 00-_44 = BaseGameSection
-	u32 _44;                        ///< _044, unused/unknown.
-	u8 _48[0x50 - 0x48];            ///< _048, unused/unknown.
-	Menu* mDebugMenu;               ///< _050, debug menu, only enabled in DEVELOP builds.
-	Font* mGameFont;                ///< _054, "big" font, seemingly for screens - set up, but never used.
-	Camera mGameCamera;             ///< _058, camera following captain.
-	f32 mCameraFarClip;             ///< _3A4, max render distance from the camera.
-	Colour _3A8;                    ///< _3A8, unused/unknown.
-	Colour _3AC[2];                 ///< _3AC, unused/unknown.
-	Colour _3B4[2];                 ///< _3B4, unused/unknown.
-	Colour _3BC[2];                 ///< _3BC, unused/unknown.
-	f32 _3C4[4];                    ///< _3C4, unused/unknown.
-	bool mIsInitialSetup;           ///< _3D4, are we still in the initial setup phase? Cannot do certain actions til we're done.
-	int mMenuRepeatTimer;           ///< _3D8, timer for detecting repeat inputs in the movie debug menu so we don't scroll too fast.
-	int mMenuRepeatDelay;           ///< _3DC, decreasing lockout for repeat inputs in the movie debug menu, for variable scroll speed.
+	u32 _44;              ///< _044, unused/unknown.
+	u8 _48[0x50 - 0x48];  ///< _048, unused/unknown.
+	Menu* mDebugMenu;     ///< _050, debug menu, only enabled in DEVELOP builds.
+	Font* mGameFont;      ///< _054, "big" font, seemingly for screens - set up, but never used.
+	Camera mGameCamera;   ///< _058, camera following captain.
+	f32 mCameraFarClip;   ///< _3A4, max render distance from the camera.
+	Colour _3A8;          ///< _3A8, unused/unknown.
+	Colour _3AC[2];       ///< _3AC, unused/unknown.
+	Colour _3B4[2];       ///< _3B4, unused/unknown.
+	Colour _3BC[2];       ///< _3BC, unused/unknown.
+	f32 _3C4[4];          ///< _3C4, unused/unknown.
+	bool mIsInitialSetup; ///< _3D4, are we still in the initial setup phase? Cannot do certain actions til we're done.
+	int mMenuRepeatTimer; ///< _3D8, timer for detecting repeat inputs in the movie debug menu so we don't scroll too fast.
+	int mMenuRepeatDelay; ///< _3DC, decreasing lockout for repeat inputs in the movie debug menu, for variable scroll speed.
 };
 
 //////////////////////////////////////////////////////
