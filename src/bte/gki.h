@@ -1,5 +1,5 @@
-#ifndef REVOSDK_BTE_GKI_H
-#define REVOSDK_BTE_GKI_H
+#ifndef BTE_GKI_H
+#define BTE_GKI_H
 
 /* Original source:
  * bluedroid <android.googlesource.com/platform/external/bluetooth/bluedroid>
@@ -30,7 +30,7 @@
  * headers
  */
 
-#include "RevoSDK/BTE/data_types.h"
+#include "RevoSDK/bte/data_types.h"
 
 /*******************************************************************************
  * macros
