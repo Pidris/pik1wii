@@ -613,9 +613,9 @@ config.libs = [
     RevolutionLib(
         "dsp",
         [
-            Object(NonMatching, "dsp/dsp.c"),
-            Object(NonMatching, "dsp/dsp_debug.c"),
-            Object(NonMatching, "dsp/dsp_task.c"),
+            Object(Matching, "dsp/dsp.c"),
+            Object(Matching, "dsp/dsp_debug.c"),
+            Object(Matching, "dsp/dsp_task.c"),
         ],
     ),
     RevolutionLib(
@@ -724,8 +724,8 @@ config.libs = [
     RevolutionLib(
         "si",
         [
-            Object(NonMatching, "si/SIBios.c"),
-            Object(NonMatching, "si/SISamplingRate.c"),
+            Object(Matching, "si/SIBios.c"),
+            Object(Matching, "si/SISamplingRate.c"),
         ],
     ),
     RevolutionLib(
@@ -739,8 +739,8 @@ config.libs = [
     RevolutionLib(
         "thp",
         [
-            Object(NonMatching, "thp/THPDec.c"),
-            Object(NonMatching, "thp/THPAudio.c"),
+            Object(Matching, "thp/THPDec.c"),
+            Object(Matching, "thp/THPAudio.c"),
         ],
     ),
     RevolutionLib(

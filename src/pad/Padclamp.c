@@ -1,4 +1,5 @@
 #include "RevoSDK/pad.h"
+#include "RevoSDK/si.h"
 #include <math.h>
 
 typedef struct PADClampRegion {

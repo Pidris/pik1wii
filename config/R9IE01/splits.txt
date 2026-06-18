@@ -663,13 +663,17 @@ db/db.c:
 
 dsp/dsp.c:
 	.text       start:0x800386CC end:0x800388D4
-	.sdata      start:0x80497508 end:0x80497510
+	.data       start:0x8031AB50 end:0x8031ABD0
+	.sdata      start:0x80497508 end:0x8049750C
+	.sbss       start:0x8049E478 end:0x8049E47C
 
 dsp/dsp_debug.c:
 	.text       start:0x800388D4 end:0x80038924
 
 dsp/dsp_task.c:
 	.text       start:0x80038924 end:0x80038D84
+	.data       start:0x8031ABD0 end:0x8031AD10
+	.sbss       start:0x8049E480 end:0x8049E498
 
 dvd/dvdfs.c:
 	.text       start:0x80038D84 end:0x80039818
@@ -876,10 +880,15 @@ pad/Pad.c:
 
 si/SIBios.c:
 	.text       start:0x8005D1E0 end:0x8005E81C
-	.sdata      start:0x80497688 end:0x80497690
+	.data       start:0x8032B6D0 end:0x8032B740
+	.bss        start:0x8040A700 end:0x8040A920
+	.sdata      start:0x80497688 end:0x8049768C
+	.sbss       start:0x8049E7B8 end:0x8049E7C8
 
 si/SISamplingRate.c:
 	.text       start:0x8005E81C end:0x8005E8FC
+	.data       start:0x8032B740 end:0x8032B7D8
+	.sbss       start:0x8049E7C8 end:0x8049E7CC
 
 vi/vi.c:
 	.text       start:0x8005E8FC end:0x800612C4
@@ -895,24 +904,33 @@ vi/vi3in1.c:
 
 thp/THPDec.c:
 	.text       start:0x80063384 end:0x80066754
+	.rodata     start:0x802F7FC8 end:0x802F8058
+	.data       start:0x8032C2C0 end:0x8032C308
+	.bss        start:0x8040AAC0 end:0x8040AC0C
+	.sdata      start:0x804976D0 end:0x804976D4
+	.sbss       start:0x8049E8A0 end:0x8049E9C4
+	.sdata2     start:0x8049FB18 end:0x8049FB34
 
 thp/THPAudio.c:
 	.text       start:0x80066754 end:0x80066BE8
 
 tpl/TPL.c:
 	.text       start:0x80066BE8 end:0x80066DFC
-	.data       start:0x8032C308 end:0x8032C334
-	.sdata      start:0x804976D8 end:0x804976E0
+	.data       start:0x8032C308 end:0x8032C333
+	.sdata      start:0x804976D8 end:0x804976DE
 	.sdata2     start:0x8049FB38 end:0x8049FB40
 
 usb/usb.c:
 	.text       start:0x80066DFC end:0x80067F28
+	.data       start:0x8032C338 end:0x8032C9C8
+	.sdata      start:0x804976E0 end:0x804976F0
 
 wenc/wenc.c:
 	.text       start:0x80067F28 end:0x80068200
 
 wpad/WPAD.c:
 	.text       start:0x80068200 end:0x8006FA34
+	.data       start:0x8032C9C8 end:0x8032CD00
 	.bss        start:0x8040AC20 end:0x8040E348
 	.sdata      start:0x804976F0 end:0x80497708
 	.sbss       start:0x8049E9D8 end:0x8049EA10

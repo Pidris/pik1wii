@@ -1,6 +1,6 @@
 #include "RevoSDK/pad.h"
 #include "RevoSDK/os.h"
-#include "RevoSDK/vi.h"
+#include "RevoSDK/si.h"
 #include <stddef.h>
 #include <string.h>
 

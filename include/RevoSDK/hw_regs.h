@@ -166,7 +166,7 @@ vu32 __DIRegs[16] AT_ADDRESS(0xCC006000);
 #define DI_CONFIG       (9)
 
 // Serial Interface registers.
-vu32 __SIRegs[64] AT_ADDRESS(0xCC006400);
+vu32 __SIRegs[64] AT_ADDRESS(0xCD006400);
 
 // offsets for __SIRegs[i]
 // Channel 0/Joy-channel 1
